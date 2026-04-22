@@ -1,12 +1,10 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const body = req.body;
-
-    // Garante que o modelo está fixo
     body.model = 'claude-sonnet-4-20250514';
     if (!body.max_tokens) body.max_tokens = 1000;
 
