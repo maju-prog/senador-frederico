@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/pessoal", "destination": "/pessoal.html" },
     { "source": "/api/ai", "destination": "/api/ai" }
   ]
 }
