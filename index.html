@@ -140,17 +140,7 @@ body{font-family:system-ui,sans-serif;background:#f5f5f3;color:#1a1a18;font-size
       <!-- Panorama filtro ativo — aparece aqui quando filtro aplicado -->
       <div id="panorama-box" style="display:none;margin-bottom:10px"></div>
 
-      <!-- Gráficos side-by-side -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-        <div class="card" style="padding:12px">
-          <div class="ct" style="margin-bottom:8px">Por tipo de território</div>
-          <canvas id="chart-tipo" height="130"></canvas>
-        </div>
-        <div class="card" style="padding:12px">
-          <div class="ct" style="margin-bottom:8px">Votos por região</div>
-          <canvas id="chart-regioes" height="130"></canvas>
-        </div>
-      </div>
+
 
       <!-- Insights: emenda x voto -->
       <div class="ibox" style="margin-bottom:8px">
@@ -181,7 +171,16 @@ body{font-family:system-ui,sans-serif;background:#f5f5f3;color:#1a1a18;font-size
       </div>
     </div>
 
-    <!-- RANKING -->
+
+    <!-- DETALHE -->
+    <div class="panel" id="panel-detalhe">
+      <div id="det-c" style="text-align:center;padding:28px;color:#9ca3af">
+        <b style="color:#374151;font-size:14px">Selecione um município na lista</b><br><br>
+        Score 5D · Emendas estaduais + federais · Comparativo · Briefing IA
+      </div>
+    </div>
+
+        <!-- RANKING -->
     <div class="panel" id="panel-ranking"><div id="rank-c"></div></div>
 
     <!-- EMENDAS -->
@@ -255,8 +254,6 @@ const D = [{"municipio":"URUGUAIANA","v2022":12866,"v2014":14647.0,"v2010":13335
 const TOP_PARL = [["PAULO PAIM",331286091],["LUIS CARLOS HEINZE",292595968],["CARLOS GOMES",222738978],["ALCEU MOREIRA",220910068],["COVATTI FILHO",220412875],["AFONSO HAMM",217728717],["DANRLEI DE DEUS HINTERHOLZ",212655093],["POMPEO DE MATTOS",209051418],["AFONSO MOTTA",208707423],["MARCON",208593101],["HEITOR SCHUCH",206030179],["GIOVANI CHERINI",200937808],["OSMAR TERRA",185069105],["MARCIO BIOLCHI",183264844],["PEDRO WESTPHALEN",165504748]];
 
 const totalGap = D.reduce((s,d)=>s+(d.gap_dir||0),0);
-document.getElementById('sm-gap').textContent=(totalGap/1e6).toFixed(1)+'M';
-document.getElementById('ov-gap').textContent=(totalGap/1e6).toFixed(1)+'M';
 
 function fmt(v){if(!v)return'—';if(v>=1e9)return'R$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'R$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'R$'+(v/1e3).toFixed(0)+'k';return'R$'+v;}
 function fmtN(n){return !n?'0':n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'k':String(n);}
@@ -270,9 +267,9 @@ const regs=[...new Set(D.map(d=>d.regiao).filter(Boolean))].sort();
 const rf=document.getElementById('f-reg');
 regs.forEach(r=>{const b=document.createElement('button');b.className='fb';b.textContent=r.split('/')[0];b.title=r;b.onclick=()=>{regF=r;rf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();};rf.appendChild(b);});
 
-function setF(f,b){filtro=f;document.getElementById('f-tipo').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(f!=='todos')sw('overview',document.querySelectorAll('.tab')[0]);render();}
-function setT(t,b){tendF=t;document.getElementById('f-tend').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(t!=='todos')sw('overview',document.querySelectorAll('.tab')[0]);render();}
-function setR(r,b){regF=r;rf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');sw('overview',document.querySelectorAll('.tab')[0]);render();}
+function setF(f,b){filtro=f;document.getElementById('f-tipo').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(f!=='todos'){const t=document.querySelector('.tab');sw('overview',t);}render();}
+function setT(t,b){tendF=t;document.getElementById('f-tend').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(t!=='todos'){const t2=document.querySelector('.tab');sw('overview',t2);}render();}
+function setR(r,b){regF=r;rf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');{const t3=document.querySelector('.tab');sw('overview',t3);}render();}
 function setQ(v){query=v.toLowerCase();render();}
 function filtered(){return D.filter(d=>(filtro==='todos'||d.tipo===filtro)&&(tendF==='todos'||d.tendencia===tendF)&&(regF==='todos'||d.regiao===regF)&&(!query||d.municipio.toLowerCase().includes(query)));}
 
@@ -296,9 +293,8 @@ function render(){
         <div class="brow"><span class="bl">Share</span><div class="bbg"><div class="bf" style="width:${Math.min((d.share_fred||0)*5,100)}%;background:#16a34a"></div></div><span class="bv">${d.share_fred||0}%</span></div>
       </div>
     </div>`).join('');
-  document.getElementById('lista').innerHTML = lista;
+  const _lista=document.getElementById('lista');if(_lista)_lista.innerHTML=lista;
   buildPanorama(f);
-  updateCharts(f);
 }
 
 function buildPanorama(f) {
@@ -375,61 +371,19 @@ function buildPanorama(f) {
 
 // Monta lista de parlamentares no overview
 const parlEl = document.getElementById('parl-list');
-if(parlEl) parlEl.innerHTML = TOP_PARL.map(([a,v])=>`
+if(parlEl && TOP_PARL) parlEl.innerHTML = TOP_PARL.map(([a,v])=>`
   <div class="parl-row">
     <span class="parl-n">${a}</span>
     <span class="parl-v">${fmt(v)}</span>
   </div>`).join('');
 
-// Gráficos Overview
-let chartTipo = null, chartReg = null;
-function updateCharts(f) {
-  const dados = f || D;
-  // Donut: tipos
-  const tipoCount = {forte:0,expansao:0,neutro:0};
-  dados.forEach(d => { if(tipoCount[d.tipo]!==undefined) tipoCount[d.tipo]++; });
-  const ctxT = document.getElementById('chart-tipo');
-  if (!ctxT) return;
-  if (chartTipo) chartTipo.destroy();
-  chartTipo = new Chart(ctxT, {
-    type: 'doughnut',
-    data: {
-      labels: ['Reduto','Expansão','Neutro'],
-      datasets:[{data:[tipoCount.forte,tipoCount.expansao,tipoCount.neutro],
-        backgroundColor:['#16a34a','#f59e0b','#94a3b8'],borderWidth:0,hoverOffset:4}]
-    },
-    options:{plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}},
-      cutout:'65%',animation:{duration:300}}
-  });
-  // Bar: votos por região
-  const regVotos = {};
-  dados.forEach(d => { const r=(d.regiao||'Outra').split('/')[0]; regVotos[r]=(regVotos[r]||0)+(d.v2022||0); });
-  const regKeys = Object.keys(regVotos).sort((a,b)=>regVotos[b]-regVotos[a]).slice(0,6);
-  const ctxR = document.getElementById('chart-regioes');
-  if (!ctxR) return;
-  if (chartReg) chartReg.destroy();
-  chartReg = new Chart(ctxR, {
-    type:'bar',
-    data:{
-      labels: regKeys.map(r=>r.length>14?r.slice(0,13)+'…':r),
-      datasets:[{data:regKeys.map(r=>regVotos[r]),
-        backgroundColor:'#1e3a5f',borderRadius:4,borderSkipped:false}]
-    },
-    options:{
-      indexAxis:'y',
-      plugins:{legend:{display:false}},
-      scales:{x:{display:false},y:{ticks:{font:{size:10}}}},
-      animation:{duration:300}
-    }
-  });
-}
-updateCharts(D);
+
 
 // Monta tabela de emendas comparativo
-function buildEmTable(){
+function buildEmTable(){const _et=document.getElementById('em-table');if(!_et)return;
   const sorted = [...D].sort((a,b)=>(b.fed_total||0)-(a.fed_total||0));
   const maxFed = Math.max(...sorted.map(d=>d.fed_total||0),1);
-  document.getElementById('em-table').innerHTML = sorted.map(d=>`
+  _et.innerHTML=sorted.map(d=>`
     <tr style="border-bottom:1px solid #f5f5f3;cursor:pointer" onclick="selM('${d.municipio}')">
       <td style="padding:5px 8px;font-size:12px;font-weight:500">${cap(d.municipio)}</td>
       <td style="padding:5px 8px;text-align:right;color:#92400e;font-weight:600">${fmt(d.emenda_total)}</td>
@@ -449,8 +403,9 @@ function buildEmTable(){
 function sw(id,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('panel-'+id).classList.add('on');
+  if(btn) btn.classList.add('on');
+  const panel=document.getElementById('panel-'+id);
+  if(panel) panel.classList.add('on');
   if(id==='ranking') buildRanking();
   if(id==='emendas') buildEmTable();
 }
@@ -472,7 +427,7 @@ function selM(nome){
     ? d.fed_areas.map(([f,v])=>`<div class="em-row"><span class="em-nome">${f}</span><span class="em-val">${fmt(v)}</span></div>`).join('')
     : '';
 
-  document.getElementById('det-c').innerHTML=`
+  const _detc=document.getElementById('det-c');if(_detc)_detc.innerHTML=`
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
       <div class="scc s${CLS[d.tipo]}" style="width:40px;height:40px;font-size:14px">${d.score}</div>
       <div>
@@ -587,8 +542,8 @@ function selM(nome){
   },10);
 }
 
-function buildRanking(){
-  document.getElementById('rank-c').innerHTML=`
+function buildRanking(){const _rc=document.getElementById('rank-c');if(!_rc)return;
+  _rc.innerHTML=`
     <div style="background:#fff;border:1px solid #e0dfd8;border-radius:9px;overflow:auto">
       <table style="width:100%;border-collapse:collapse;min-width:820px">
         <thead><tr style="background:#f9f9f7;border-bottom:1px solid #e0dfd8">
@@ -645,6 +600,7 @@ Briefing 3 frases: (1) diagnóstico eleitoral com números concretos, (2) ação
 
 async function aiSearch(prompt){
   const div=document.getElementById('ai-result');
+  if(!div) return;
   div.innerHTML='<div style="font-size:12px;color:#9ca3af;padding:8px">Pesquisando...</div>';
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,tools:[{"type":"web_search_20250305","name":"web_search"}],messages:[{role:'user',content:prompt}]})});
@@ -662,9 +618,12 @@ function exportCSV(){
   a.download='frederico_v6.csv'; a.click();
 }
 
-document.getElementById('sm-gap') && (document.getElementById('sm-gap').textContent = fmtN(D.reduce((s,d)=>s+(d.gap_dir||0),0)));
-document.getElementById('ov-gap') && (document.getElementById('ov-gap').textContent = fmtN(D.reduce((s,d)=>s+(d.gap_dir||0),0)));
+
+// Init
+var _smg=document.getElementById("sm-gap");
+var _ovg=document.getElementById("ov-gap");
+var _totalGap=D.reduce(function(s,d){return s+(d.gap_dir||0);},0);
+if(_smg) _smg.textContent=(_totalGap/1e6).toFixed(1)+"M";
+if(_ovg) _ovg.textContent=(_totalGap/1e6).toFixed(1)+"M";
 render();
 </script>
-</body>
-</html>

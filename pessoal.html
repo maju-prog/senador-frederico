@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Frederico 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6fb; --card:#fff; --border:#dde3ef;
+  --text:#0d1b3e; --muted:#6b7a99; --faint:#edf0f8;
+  --g:#00923F; --gb:#e8f8ef; --gbd:#a8e6c2;
+  --a:#004A9F; --ab:#e8f0fc; --abd:#a8c4f0;
+  --b:#004A9F; --bb:#e8f0fc; --bbd:#a8c4f0;
+  --r:#c0392b; --rb:#fdf0ef; --rbd:#f5b7b1;
+  --navy:#004A9F; --psd-green:#00923F;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overscroll-behavior:none}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ─────────────────────────────────── */
+.hdr{
+  background:linear-gradient(90deg,#004A9F 70%,#00923F 100%);color:#fff;
+  padding:env(safe-area-inset-top,0) 0 0;
+  position:sticky;top:0;z-index:200;
+}
+.hdr-inner{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px 12px;
+}
+.hdr-logo{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;
+  flex-shrink:0;
+}
+.hdr-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+.hdr-badge{
+  margin-left:auto;background:#ef4444;color:#fff;
+  font-size:11px;font-weight:600;padding:3px 10px;
+  border-radius:20px;white-space:nowrap;flex-shrink:0;
+}
+
+/* ── NAV TABS ───────────────────────────────── */
+.nav{
+  display:flex;background:var(--navy);
+  border-top:1px solid rgba(255,255,255,.07);
+  overflow-x:auto;scrollbar-width:none;
+  padding:0 6px;
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{
+  flex-shrink:0;padding:10px 14px;
+  font-size:12.5px;font-weight:500;
+  color:rgba(255,255,255,.45);
+  border:none;background:none;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all .18s;
+  letter-spacing:.1px;
+}
+.nav-btn.on{color:#fff;border-bottom-color:rgba(255,255,255,.7)}
+
+/* ── SECTIONS ───────────────────────────────── */
+.sec{display:none;animation:fadeUp .22s ease}
+.sec.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── HERO BLOCK ─────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg,#004A9F 0%,#003580 100%);color:#fff;
+  padding:20px 18px 22px;
+}
+.hero-eyebrow{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.8px;
+  text-transform:uppercase;margin-bottom:8px}
+.hero-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:24px;font-weight:700;line-height:1.25;margin-bottom:6px;
+}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.5)}
+.hero-nums{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-top:18px;
+}
+.hnum{
+  background:rgba(255,255,255,.08);border-radius:10px;
+  padding:10px 10px 8px;text-align:center;
+}
+.hnum-v{font-size:20px;font-weight:700;line-height:1}
+.hnum-l{font-size:10px;color:rgba(255,255,255,.4);margin-top:4px}
+
+/* ── SECTION LABEL ──────────────────────────── */
+.slabel{
+  font-size:10.5px;font-weight:600;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.9px;
+  padding:18px 18px 7px;
+}
+
+/* ── ACCORDION CARD ─────────────────────────── */
+.ac{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;margin:0 14px 8px;
+  overflow:hidden;transition:box-shadow .2s;
+}
+.ac-hd{
+  display:flex;align-items:flex-start;gap:13px;
+  padding:15px 16px;cursor:pointer;user-select:none;
+}
+.ac-hd:active{background:var(--faint)}
+.ac-ico{font-size:21px;flex-shrink:0;margin-top:1px}
+.ac-tit{font-size:14.5px;font-weight:600;line-height:1.3}
+.ac-cap{font-size:12.5px;color:var(--muted);margin-top:3px}
+.ac-arr{
+  margin-left:auto;color:var(--muted);font-size:18px;
+  flex-shrink:0;transition:transform .25s cubic-bezier(.4,0,.2,1);
+  margin-top:1px;
+}
+.ac.open .ac-arr{transform:rotate(180deg)}
+.ac-bd{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1)}
+.ac.open .ac-bd{max-height:1200px}
+.ac-in{padding:0 16px 16px;border-top:1px solid var(--border)}
+
+/* ── PESQUISA GRID ──────────────────────────── */
+.pq-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 14px;margin-top:4px}
+.pq-item{
+  border:1px solid var(--border);border-radius:11px;
+  padding:10px 12px;background:var(--card);
+}
+.pq-item.eu{background:var(--ab);border-color:var(--abd)}
+.pq-nome{font-size:11px;color:var(--muted)}
+.pq-pct{font-size:21px;font-weight:700;margin-top:3px}
+
+/* ── PROGRESS ───────────────────────────────── */
+.prog{margin-top:9px}
+.prog-row{display:flex;justify-content:space-between;
+  font-size:12px;margin-bottom:3px}
+.prog-row b{color:var(--text)}
+.prog-row span{color:var(--muted)}
+.prog-bg{height:5px;background:var(--faint);border-radius:3px;margin-bottom:9px}
+.prog-fill{height:5px;border-radius:3px;transition:width .6s .1s}
+
+/* ── STAT GRID ──────────────────────────────── */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.sg3{grid-template-columns:repeat(3,1fr)}
+.st{background:var(--faint);border-radius:9px;padding:9px 11px}
+.st-v{font-size:16px;font-weight:700}
+.st-l{font-size:10.5px;color:var(--muted);margin-top:2px}
+
+/* ── ALERT BOX ──────────────────────────────── */
+.al{border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.55;margin-top:8px}
+.al-g{background:var(--gb);border:1px solid var(--gbd);color:var(--g)}
+.al-a{background:var(--ab);border:1px solid var(--abd);color:var(--a)}
+.al-b{background:var(--bb);border:1px solid var(--bbd);color:var(--b)}
+.al-r{background:var(--rb);border:1px solid var(--rbd);color:var(--r)}
+
+/* ── MUN LIST ───────────────────────────────── */
+.ml{padding:0 14px}
+.mi{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;margin-bottom:8px;overflow:hidden;
+}
+.mi-hd{
+  display:flex;align-items:center;gap:11px;
+  padding:13px 15px;cursor:pointer;user-select:none;
+}
+.mi-hd:active{background:var(--faint)}
+.mi-score{
+  width:37px;height:37px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;flex-shrink:0;
+}
+.mi-info{flex:1;min-width:0}
+.mi-name{font-size:14.5px;font-weight:600}
+.mi-tags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap}
+.mi-hint{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.4}
+.mi-arr{color:var(--muted);font-size:17px;flex-shrink:0;transition:transform .25s}
+.mi.open .mi-arr{transform:rotate(180deg)}
+.mi-bd{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1)}
+.mi.open .mi-bd{max-height:1400px}
+.mi-in{padding:0 15px 15px;border-top:1px solid var(--border)}
+
+/* ── TAG / PILL ─────────────────────────────── */
+.tag{
+  display:inline-flex;align-items:center;
+  font-size:10.5px;font-weight:600;padding:2px 8px;
+  border-radius:20px;letter-spacing:.15px;white-space:nowrap;
+}
+.tag-g{background:var(--gb);color:var(--g);border:1px solid var(--gbd)}
+.tag-a{background:var(--ab);color:var(--a);border:1px solid var(--abd)}
+.tag-b{background:var(--bb);color:var(--b);border:1px solid var(--bbd)}
+.tag-n{background:var(--faint);color:var(--muted);border:1px solid var(--border)}
+
+/* ── COMP ROWS ──────────────────────────────── */
+.cr{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 0;border-bottom:1px solid var(--border);
+  font-size:13px;
+}
+.cr:last-child{border:none}
+.cr-n{flex:1;color:var(--muted)}
+.cr-v{font-weight:600}
+.cr.eu .cr-n{color:var(--b);font-weight:600}
+.cr.eu .cr-v{color:var(--b)}
+
+/* ── AI AREA ────────────────────────────────── */
+.ai-box{
+  background:var(--faint);border-radius:10px;
+  padding:12px;font-size:13px;color:var(--muted);
+  font-style:italic;min-height:46px;margin-top:10px;
+  line-height:1.65;transition:all .2s;
+}
+.ai-box.loaded{color:var(--text);font-style:normal;background:var(--faint)}
+.ai-btn{
+  margin-top:8px;width:100%;
+  background:var(--navy);color:#fff;border:none;
+  border-radius:10px;padding:11px;font-size:13.5px;
+  font-weight:500;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:opacity .15s;
+}
+.ai-btn:disabled{opacity:.45}
+.ai-btn:active{opacity:.75}
+
+/* ── BUSCA ──────────────────────────────────── */
+.busca-wrap{padding:12px 14px 0}
+.busca{
+  width:100%;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;
+  padding:11px 14px;font-size:14px;
+  font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);outline:none;
+}
+.busca:focus{border-color:var(--navy)}
+.busca::placeholder{color:var(--muted)}
+
+/* ── NEWS BTN ───────────────────────────────── */
+.news-btn{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:13px 15px;margin-bottom:8px;
+  cursor:pointer;transition:all .15s;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.news-btn:active{background:var(--faint)}
+.news-btn-ico{font-size:20px;flex-shrink:0}
+.news-btn-txt{flex:1}
+.news-btn-tit{font-size:14px;font-weight:600;color:var(--text)}
+.news-btn-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.news-btn-arr{color:var(--muted);font-size:16px;flex-shrink:0;transition:transform .25s}
+.news-result{
+  background:var(--faint);border-radius:10px;
+  padding:13px;font-size:13px;line-height:1.7;
+  color:var(--text);margin-bottom:8px;display:none;
+  white-space:pre-wrap;
+}
+
+/* ── EMENDA ROW ─────────────────────────────── */
+.em-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--border);
+}
+.em-row:last-child{border:none}
+.em-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.em-nome{flex:1;font-size:13px;font-weight:500}
+.em-val{font-size:13.5px;font-weight:700;color:var(--a)}
+
+.spacer{height:28px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-logo">F</div>
+    <div>
+      <div class="hdr-title">Senado 2026</div>
+      <div class="hdr-sub">Painel pessoal · Frederico Antunes</div>
+    </div>
+    <div class="hdr-badge">9,1% — abr/26</div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn on" onclick="goTo('situacao',this)">Situação</button>
+    <button class="nav-btn" onclick="goTo('municipios',this)">Municípios</button>
+    <button class="nav-btn" onclick="goTo('emendas',this)">Emendas</button>
+    <button class="nav-btn" onclick="goTo('concorrentes',this)">Concorrentes</button>
+    <button class="nav-btn" onclick="goTo('noticias',this)">Notícias</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  SITUAÇÃO                                  -->
+<!-- ══════════════════════════════════════════ -->
+<div class="sec on" id="sec-situacao">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Pesquisa Futura Inteligência · abr 2026</div>
+    <div class="hero-title">Você está em 6º lugar,<br>mas 32% ainda não decidiram.</div>
+    <div class="hero-sub">800 entrevistas · 2 vagas disponíveis no Senado</div>
+    <div class="hero-nums">
+      <div class="hnum"><div class="hnum-v">9,1%</div><div class="hnum-l">Você hoje</div></div>
+      <div class="hnum"><div class="hnum-v">32%</div><div class="hnum-l">Indecisos</div></div>
+      <div class="hnum"><div class="hnum-v">~25%</div><div class="hnum-l">Meta para 2ª vaga</div></div>
+    </div>
+  </div>
+
+  <div class="pq-grid">
+    <div class="pq-item"><div class="pq-nome">Manuela (PSOL)</div><div class="pq-pct" style="color:var(--g)">36%</div></div>
+    <div class="pq-item"><div class="pq-nome">Rigotto (MDB)</div><div class="pq-pct" style="color:var(--b)">31,3%</div></div>
+    <div class="pq-item"><div class="pq-nome">Van Hattem (Novo)</div><div class="pq-pct" style="color:#6b7280">27,6%</div></div>
+    <div class="pq-item"><div class="pq-nome">Pimenta (PT)</div><div class="pq-pct" style="color:#6b7280">24,7%</div></div>
+    <div class="pq-item"><div class="pq-nome">Sanderson (PL)</div><div class="pq-pct" style="color:#6b7280">10,3%</div></div>
+    <div class="pq-item eu"><div class="pq-nome">Você (PSD)</div><div class="pq-pct" style="color:var(--a)">9,1%</div></div>
+  </div>
+
+  <div class="slabel">Leitura direta</div>
+
+  <div class="ac" id="a1">
+    <div class="ac-hd" onclick="tog('a1')">
+      <div class="ac-ico">📍</div>
+      <div><div class="ac-tit">Você tem base real, mas concentrada</div>
+        <div class="ac-cap">36.325 votos em 2022 — maioria na Fronteira Oeste</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">A correlação é clara: municípios com emenda sua têm share médio de <b>7,6%</b> do eleitorado conservador. Sem emenda: <b>0,9%</b>. Você é 8× mais eficiente onde chegou de verdade. Uruguaiana R$4M → 12.866 votos (20% share). Itaqui R$500k → 13,8%.</p>
+      <div class="al al-a" style="margin-top:10px">⚠️ <b>Sanderson (PL) está construindo presença na Serra via emendas PIX</b> (Gramado, Canela, Erechim). Mesmo campo que você — precisa marcar presença lá antes do 2º semestre.</div>
+      <div class="sg" style="margin-top:10px">
+        <div class="st"><div class="st-v">36.325</div><div class="st-l">Votos em 2022</div></div>
+        <div class="st"><div class="st-v">60</div><div class="st-l">Municípios analisados</div></div>
+        <div class="st"><div class="st-v">R$ 8M</div><div class="st-l">Investido em emendas</div></div>
+        <div class="st"><div class="st-v">14</div><div class="st-l">Cidades com emenda</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="ac" id="a2">
+    <div class="ac-hd" onclick="tog('a2')">
+      <div class="ac-ico">🚀</div>
+      <div><div class="ac-tit">A janela existe — e é grande</div>
+        <div class="ac-cap">Cidades grandes te conhecem pouco ainda</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">Os municípios "crescendo" têm juntos <b>975 mil votos conservadores não convertidos</b>. Canoas: 102k disponíveis, você teve 1% em 2022. Pelotas: Leite teve 78% lá — você teve 45 votos. O eleitorado existe, só não chegou até você ainda.</p>
+      <div class="al al-g">✅ <b>Você cresceu em 20 dos 60 municípios entre 2018→2022.</b> O padrão é claro: onde teve emenda contínua, cresceu. Canoas ↑22%, Alegrete ↑22%, Encruzilhada ↑.</div>
+      <div class="al al-b" style="margin-top:7px">💡 Como senador sua cota salta de R$ 2M para <b>R$ 52M por ano</b> — 26×. Pelotas, Rio Grande e Bagé têm Leite >60% e quase zero votos seus. Uma emenda muda esse quadro.</div>
+    </div></div>
+  </div>
+
+  <div class="ac" id="a3">
+    <div class="ac-hd" onclick="tog('a3')">
+      <div class="ac-ico">⚠️</div>
+      <div><div class="ac-tit">Alerta: Sanderson está crescendo na Serra</div>
+        <div class="ac-cap">Erechim, Gramado, Canela — território que você não ocupa</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">Sanderson (PL) destinou R$ 2M em emendas federais para 12 municípios da Serra desde 2023 — Gramado, Canela, Erechim, Taquara. É pré-campanha territorial visível nos dados públicos. Ele está em 10,3% na pesquisa, quase igual a você, e disputando o mesmo eleitorado.</p>
+      <div class="al al-r">🔴 <b>Se ele consolidar a Serra (250k de gap), vocês ficam empatados no campo e os dois perdem a 2ª vaga.</b> O campo conservador é grande o suficiente para um senador — não para dois.</div>
+      <div class="al al-b" style="margin-top:7px">💡 <b>Resposta:</b> agenda na Serra no 1º semestre de 2026 + emenda estadual em Erechim ou Caxias. Seu diferencial: 6 mandatos de entrega comprovada. Ele não tem esse histórico.</div>
+    </div></div>
+  </div>
+
+
+  <div class="ac" id="a4">
+    <div class="ac-hd" onclick="tog('a4')">
+      <div class="ac-ico">💎</div>
+      <div><div class="ac-tit">4 cidades de máximo ROI — prioridade imediata</div>
+        <div class="ac-cap">Leite alto + gap enorme + zero emenda sua</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">Eleitorado que já vota em aliado, gap enorme de votos disponíveis e <b>zero emenda sua até agora</b>. Uma emenda bem comunicada nessas cidades pode mover centenas de votos num eleitorado que já está alinhado mas não te conhece.</p>
+      <div style="margin-top:10px">
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--psd-green);flex-shrink:0;margin-top:4px"></div>
+          <div><b>Pelotas</b> — Leite 78% · 88k votos disponíveis · você teve 45 votos em 2022</div>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--psd-green);flex-shrink:0;margin-top:4px"></div>
+          <div><b>Rio Grande</b> — Leite 64% · 43k votos disponíveis · você teve 16 votos</div>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--psd-green);flex-shrink:0;margin-top:4px"></div>
+          <div><b>Bagé</b> — campo conservador forte · 30k votos disponíveis</div>
+        </div>
+        <div style="display:flex;gap:10px;padding:8px 0">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--psd-green);flex-shrink:0;margin-top:4px"></div>
+          <div><b>Camaquã</b> — interior produtivo · 22k votos disponíveis</div>
+        </div>
+      </div>
+      <div class="al al-a" style="margin-top:10px">💡 R$ 500k em saúde em Pelotas, bem comunicado localmente, pode converter centenas de votos num eleitorado que já é seu por perfil.</div>
+    </div></div>
+  </div>
+
+  <div class="spacer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  MUNICÍPIOS                                -->
+<!-- ══════════════════════════════════════════ -->
+<div class="sec" id="sec-municipios">
+  <div class="busca-wrap">
+    <input class="busca" placeholder="🔍 Buscar cidade..." oninput="filtrarMuns(this.value)">
+  </div>
+  <div style="font-size:11px;color:var(--muted);padding:8px 14px 0">Toque no título do grupo para ver o resumo.</div>
+
+  <div id="pan-forte" style="display:none"></div>
+  <div class="slabel" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none" onclick="togPan('forte')">
+    <span>💚 Seus redutos</span><span id="arr-forte" style="font-size:16px;color:var(--muted)">›</span>
+  </div>
+  <div class="ml" id="ml-forte"></div>
+
+  <div id="pan-crescendo" style="display:none"></div>
+  <div class="slabel" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none" onclick="togPan('crescendo')">
+    <span>🟡 Crescendo</span><span id="arr-crescendo" style="font-size:16px;color:var(--muted)">›</span>
+  </div>
+  <div class="ml" id="ml-crescendo"></div>
+
+  <div id="pan-oport" style="display:none"></div>
+  <div class="slabel" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none" onclick="togPan('oport')">
+    <span>🔵 Para desenvolver</span><span id="arr-oport" style="font-size:16px;color:var(--muted)">›</span>
+  </div>
+  <div class="ml" id="ml-oport"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  EMENDAS                                   -->
+<!-- ══════════════════════════════════════════ -->
+<div class="sec" id="sec-emendas">
+  <div class="hero" style="background:linear-gradient(135deg,#0c4a6e,#1e3a5f)">
+    <div class="hero-eyebrow">Emendas parlamentares estaduais 2020–2025</div>
+    <div class="hero-title">Você investiu R$ 8M<br>em 14 cidades.</div>
+    <div class="hero-sub">R$ 7,2M efetivamente pago · 63 projetos</div>
+    <div class="hero-nums">
+      <div class="hnum"><div class="hnum-v">R$ 5,3M</div><div class="hnum-l">Saúde</div></div>
+      <div class="hnum"><div class="hnum-v">R$ 1,1M</div><div class="hnum-l">Cultura</div></div>
+      <div class="hnum"><div class="hnum-v">R$ 0,9M</div><div class="hnum-l">Dir. Humanos</div></div>
+    </div>
+  </div>
+
+  <div class="slabel">Por cidade</div>
+  <div class="ac" style="margin-bottom:0">
+    <div class="ac-in" style="padding-top:12px" id="em-lista"></div>
+  </div>
+
+  <div class="slabel">Por que isso importa</div>
+  <div class="ac" id="a-emarg">
+    <div class="ac-hd" onclick="tog('a-emarg')">
+      <div class="ac-ico">🎯</div>
+      <div><div class="ac-tit">Como usar esse número na campanha</div>
+        <div class="ac-cap">Argumento concreto para cada conversa</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <div class="al al-g">✅ Nas cidades onde você investiu: <i>"Já trouxe R$ X pra cá. Como senador, vou trazer R$ 52M por ano."</i></div>
+      <div class="al al-a" style="margin-top:7px">⚡ Nas cidades sem emenda (Pelotas, Gravataí, Canoas): <i>"Essas cidades geram centenas de milhões de ICMS pro estado. Merecem atenção — e eu vou dar."</i></div>
+      <div class="al al-b" style="margin-top:7px">📊 Dado importante: todos os 82 deputados estaduais têm a mesma cota de emenda. A diferença do Frederico é onde investiu — projetos maiores, menos mas mais impactantes.</div>
+    </div></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  CONCORRENTES                              -->
+<!-- ══════════════════════════════════════════ -->
+<div class="sec" id="sec-concorrentes">
+  <div class="slabel">Pesquisa atual</div>
+  <div class="ac" style="margin-bottom:0">
+    <div class="ac-in" style="padding-top:12px">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Para o senado, você precisa ficar entre os 2 mais votados.</p>
+      <div class="prog">
+        <div class="prog-row"><b>Manuela D'Ávila (PSOL)</b><span>36%</span></div>
+        <div class="prog-bg"><div class="prog-fill" style="width:36%;background:#16a34a"></div></div>
+        <div class="prog-row"><b>Rigotto (MDB)</b><span>31,3%</span></div>
+        <div class="prog-bg"><div class="prog-fill" style="width:31.3%;background:#1e40af"></div></div>
+        <div class="prog-row"><b>Van Hattem (Novo)</b><span>27,6%</span></div>
+        <div class="prog-bg"><div class="prog-fill" style="width:27.6%;background:#6b7280"></div></div>
+        <div class="prog-row"><b>Pimenta (PT)</b><span>24,7%</span></div>
+        <div class="prog-bg"><div class="prog-fill" style="width:24.7%;background:#6b7280"></div></div>
+        <div class="prog-row"><b>Sanderson (PL)</b><span>10,3%</span></div>
+        <div class="prog-bg"><div class="prog-fill" style="width:10.3%;background:#94a3b8"></div></div>
+        <div class="prog-row" style="color:var(--a)"><b>Você (PSD)</b><span>9,1%</span></div>
+        <div class="prog-bg"><div class="prog-fill" style="width:9.1%;background:#f59e0b"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">Quem te ameaça mais</div>
+  <div class="ac" id="a-sand">
+    <div class="ac-hd" onclick="tog('a-sand')">
+      <div class="ac-ico">🔴</div>
+      <div><div class="ac-tit">Sanderson (PL) — mesmo campo, crescendo</div>
+        <div class="ac-cap">R$ 2M em emendas na Serra Gaúcha desde 2023</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">Sanderson é deputado federal e está construindo presença territorial em municípios que historicamente votaram Leite — Gramado, Canela, Erechim, Taquara, Nova Petrópolis. Ele entrega equipamentos de segurança pública via emenda, o que gera visibilidade local imediata.</p>
+      <div class="al al-r">Você e ele disputam o mesmo eleitorado de direita. Se ele crescer, você não cresce.</div>
+      <div class="al al-b" style="margin-top:7px">💡 Seu diferencial: 6 mandatos de entrega estadual contra o histórico mais curto dele. Mas precisa contar essa história lá.</div>
+    </div></div>
+  </div>
+
+  <div class="ac" id="a-vhat">
+    <div class="ac-hd" onclick="tog('a-vhat')">
+      <div class="ac-ico">🟡</div>
+      <div><div class="ac-tit">Van Hattem (Novo) — à frente, mas diferente</div>
+        <div class="ac-cap">27,6% — disputa o eleitorado liberal-conservador</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">Van Hattem está à frente, mas o perfil dele é mais ideológico-liberal. Seu eleitorado é diferente do seu em parte — você tem mais capilaridade territorial, ele tem mais visibilidade nas redes. Uma disputa direta faz sentido nas cidades do interior.</p>
+      <div class="al al-a">⚡ Interior do RS tende a preferir candidatos com histórico de entrega. Esse é o seu campo.</div>
+    </div></div>
+  </div>
+
+  <div class="ac" id="a-heinz">
+    <div class="ac-hd" onclick="tog('a-heinz')">
+      <div class="ac-ico">⚡</div>
+      <div><div class="ac-tit">Heinze (PP) — a ameaça no seu reduto</div>
+        <div class="ac-cap">Provável candidato que disputa Uruguaiana e Fronteira Oeste</div></div>
+      <div class="ac-arr">›</div>
+    </div>
+    <div class="ac-bd"><div class="ac-in">
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">Em 2018, Heinze (PP) foi o senador mais votado nos municípios onde você tem mais presença. Você e ele já foram do mesmo partido. Se ele entrar na corrida, vai disputar exatamente as cidades que hoje são suas.</p>
+      <div class="al al-r">🔴 Prioridade máxima: consolidar Uruguaiana e Fronteira antes que Heinze estruture campanha lá.</div>
+    </div></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!--  NOTÍCIAS                                  -->
+<!-- ══════════════════════════════════════════ -->
+<div class="sec" id="sec-noticias">
+  <div class="slabel">Consultar ao vivo</div>
+  <div style="padding:0 14px">
+    <div class="al al-b" style="margin-bottom:12px">Essas buscas consultam a internet agora, em tempo real.</div>
+
+    <div class="news-btn" onclick="buscarNews('Busque notícias dos últimos 30 dias sobre Frederico Antunes candidato senado RS 2026. Liste os 5 pontos mais importantes: alianças, ataques, posicionamento, pesquisas, eventos relevantes. Seja direto e objetivo.','r-noticias',this)">
+      <div class="news-btn-ico">📰</div>
+      <div class="news-btn-txt"><div class="news-btn-tit">Notícias sobre você</div><div class="news-btn-sub">Últimos 30 dias</div></div>
+      <div class="news-btn-arr">›</div>
+    </div>
+    <div class="news-result" id="r-noticias"></div>
+
+    <div class="news-btn" onclick="buscarNews('Pesquisas eleitorais mais recentes para o Senado do Rio Grande do Sul 2026. Liste todos os candidatos, percentuais, instituto, data e margem de erro. Se houver pesquisas novas além da Futura Inteligência de abril/2026, destaque.','r-pesquisa',this)">
+      <div class="news-btn-ico">📊</div>
+      <div class="news-btn-txt"><div class="news-btn-tit">Pesquisas mais recentes</div><div class="news-btn-sub">Todos os institutos</div></div>
+      <div class="news-btn-arr">›</div>
+    </div>
+    <div class="news-result" id="r-pesquisa"></div>
+
+    <div class="news-btn" onclick="buscarNews('Quais os temas mais em debate no Rio Grande do Sul em abril/2026? Segurança, enchentes, economia, saúde — o que o eleitorado gaúcho mais quer ouvir dos candidatos ao senado nesse momento?','r-pautas',this)">
+      <div class="news-btn-ico">🎯</div>
+      <div class="news-btn-txt"><div class="news-btn-tit">O que está em pauta no RS</div><div class="news-btn-sub">Temas relevantes agora</div></div>
+      <div class="news-btn-arr">›</div>
+    </div>
+    <div class="news-result" id="r-pautas"></div>
+
+    <div class="news-btn" onclick="buscarNews('Há alguma fake news, desinformação ou ataque recente contra Frederico Antunes deputado estadual RS candidato senado 2026? Consulte AosFatos, Lupa e G1. Relate o que encontrar.','r-fake',this)">
+      <div class="news-btn-ico">🔍</div>
+      <div class="news-btn-txt"><div class="news-btn-tit">Alguma fake news sobre você?</div><div class="news-btn-sub">Checagem AosFatos, Lupa</div></div>
+      <div class="news-btn-arr">›</div>
+    </div>
+    <div class="news-result" id="r-fake"></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<script>
+const D = [{"nome":"Uruguaiana","municipio":"URUGUAIANA","score":76,"situacao":"forte","votos":12866,"votos18":10266,"emenda":2450000,"emendaFed":2020227,"gap":25720,"share":20.4,"leite":51.9,"tend":"↑","regiao":"Fronteira Oeste","acao":"Você investiu aqui e está performando. Manter presença.","icms":287692017,"conv":23947545,"dep35":73.5,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["FREDERICO ANTUNES",4000000],["ERIC LINS",1800000],["AIRTON LIMA",400000]],"est_rank":1},{"nome":"Alegrete","municipio":"ALEGRETE","score":59,"situacao":"forte","votos":4817,"votos18":2039,"emenda":925000,"emendaFed":3777584,"gap":14717,"share":11.3,"leite":52.2,"tend":"↑","regiao":"Fronteira Oeste","acao":"Você investiu aqui e está performando. Manter presença.","icms":250871379,"conv":35920081,"dep35":76.0,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["FREDERICO ANTUNES",925000],["TENENTE CORONEL ZUCCO",688924],["ELIANA BAYER",300000]],"est_rank":1},{"nome":"Porto Alegre","municipio":"PORTO ALEGRE","score":57,"situacao":"forte","votos":2540,"votos18":2640,"emenda":1150000,"emendaFed":359275015,"gap":368029,"share":0.3,"leite":42.2,"tend":"→","regiao":"Região Metropolitana","acao":"Você investiu aqui e está performando. Manter presença.","icms":3000145831,"conv":1735407652,"dep35":76.5,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["LUCIANA GENRO",3807200],["SOFIA CAVEDON",2700000],["KAKÁ D´ÁVILA",2525000]],"est_rank":0},{"nome":"Itaqui","municipio":"ITAQUI","score":55,"situacao":"forte","votos":2740,"votos18":3447,"emenda":450000,"emendaFed":972390,"gap":7326,"share":13.8,"leite":55.0,"tend":"↓","regiao":"Fronteira Oeste","acao":"Você investiu aqui e está performando. Manter presença.","icms":157028381,"conv":9537789,"dep35":72.7,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["AIRTON LIMA",600000],["FREDERICO ANTUNES",500000],["DELEGADO ZUCCO",100000]],"est_rank":2},{"nome":"Pelotas","municipio":"PELOTAS","score":53,"situacao":"crescendo","votos":45,"votos18":86,"emenda":0,"emendaFed":17596150,"gap":88064,"share":0.0,"leite":78.1,"tend":"↓","regiao":"Sul","acao":"88k votos conservadores que ainda não te conhecem. Grande chance.","icms":590716255,"conv":134966074,"dep35":73.8,"macro":["Região historicamente difícil. Foco em prefeitos aliados e lideranças locais. Ev"],"est_top3":[["LUIZ HENRIQUE VIANA",2250000],["FERNANDO MARRONI",1850000],["ADRIANA LARA",580000]],"est_rank":0},{"nome":"Canoas","municipio":"CANOAS","score":52,"situacao":"crescendo","votos":1032,"votos18":543,"emenda":100000,"emendaFed":7569449,"gap":102165,"share":0.5,"leite":41.8,"tend":"↑","regiao":"Região Metropolitana","acao":"Você investiu aqui e está performando. Manter presença.","icms":2145909865,"conv":69359803,"dep35":72.8,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["LUCIANA GENRO",450000],["MATHEUS GOMES",450000],["ELIZANDRO SABINO",350000]],"est_rank":6},{"nome":"Santa Maria","municipio":"SANTA MARIA","score":50,"situacao":"crescendo","votos":296,"votos18":1000,"emenda":0,"emendaFed":66196237,"gap":79827,"share":0.2,"leite":48.7,"tend":"↓","regiao":"Centro","acao":"79k votos disponíveis. Vale uma visita estruturada.","icms":579811774,"conv":376495337,"dep35":73.9,"macro":["Região com eleitorado pulverizado. Apostar em presença física e eventos locais. "],"est_top3":[["VALDECI OLIVEIRA",4650000],["FRANCIANE BAYER",320000],["LUCIANA GENRO",200000]],"est_rank":0},{"nome":"Caxias Do Sul","municipio":"CAXIAS DO SUL","score":48,"situacao":"crescendo","votos":126,"votos18":125,"emenda":0,"emendaFed":17293694,"gap":167347,"share":0.0,"leite":33.8,"tend":"→","regiao":"Serra Gaúcha","acao":"167k votos conservadores que ainda não te conhecem. Grande chance.","icms":1688928221,"conv":659700373,"dep35":73.5,"macro":["Pautar economia local: turismo, vitivinicultura e indústria. Aproveitar o alinha"],"est_top3":[["NERI O CARTEIRO",2860000],["PEPE VARGAS",2770000],["PROF. CLAUDIO BRANCHIERI",930000]],"est_rank":0},{"nome":"Barra Do Quaraí","municipio":"BARRA DO QUARAÍ","score":48,"situacao":"crescendo","votos":301,"votos18":280,"emenda":0,"emendaFed":571640,"gap":558,"share":12.8,"leite":63.2,"tend":"→","regiao":"Fronteira Oeste","acao":"Território para desenvolver com investimento direto.","icms":29823064,"conv":1293406,"dep35":71.8,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["JEFERSON FERNANDES",200000],["ADÃO PRETTO FILHO",100000],["RODRIGO LORENZONI",50000]],"est_rank":0},{"nome":"Manoel Viana","municipio":"MANOEL VIANA","score":47,"situacao":"crescendo","votos":473,"votos18":346,"emenda":150000,"emendaFed":756761,"gap":1256,"share":10.8,"leite":54.3,"tend":"↑","regiao":"Fronteira Oeste","acao":"Você investiu mas tem poucos votos. Precisa aparecer mais.","icms":39417003,"conv":5524408,"dep35":75.6,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["FRANCIANE BAYER",125000],["FREDERICO ANTUNES",100000],["EDUARDO LOUREIRO",50000]],"est_rank":2},{"nome":"Encruzilhada Do Sul","municipio":"ENCRUZILHADA DO SUL","score":46,"situacao":"crescendo","votos":1465,"votos18":2168,"emenda":300000,"emendaFed":2148099,"gap":3797,"share":9.7,"leite":64.7,"tend":"↓","regiao":"Outros","acao":"Você investiu aqui e está performando. Manter presença.","icms":100235955,"conv":12336592,"dep35":75.1,"macro":["Eleitorado maduro (75% com 35 anos ou mais): rádio, programas religiosos e event"],"est_top3":[["FREDERICO ANTUNES",450000],["EDEGAR PRETTO",200000],["AIRTON ARTUS",200000]],"est_rank":1},{"nome":"Passo Fundo","municipio":"PASSO FUNDO","score":45,"situacao":"crescendo","votos":23,"votos18":29,"emenda":0,"emendaFed":10607455,"gap":67580,"share":0.0,"leite":45.6,"tend":"↓","regiao":"Planalto","acao":"67k votos disponíveis. Vale uma visita estruturada.","icms":620707625,"conv":111090614,"dep35":73.0,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["MATEUS WESP",1920000],["FRANCIANE BAYER",150000],["CAPITÃO MARTIM",150000]],"est_rank":0},{"nome":"Novo Hamburgo","municipio":"NOVO HAMBURGO","score":44,"situacao":"crescendo","votos":57,"votos18":74,"emenda":0,"emendaFed":6893418,"gap":90062,"share":0.0,"leite":34.0,"tend":"↓","regiao":"Região Metropolitana","acao":"90k votos conservadores que ainda não te conhecem. Grande chance.","icms":592588492,"conv":18972620,"dep35":74.1,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["PROFESSOR ISSUR KOCH",975000],["ISSUR KOCH",850000],["GAÚCHO DA GERAL",760000]],"est_rank":0},{"nome":"Viamão","municipio":"VIAMÃO","score":44,"situacao":"crescendo","votos":33,"votos18":68,"emenda":0,"emendaFed":2888928,"gap":57587,"share":0.0,"leite":48.1,"tend":"↓","regiao":"Região Metropolitana","acao":"57k votos disponíveis. Vale uma visita estruturada.","icms":378569176,"conv":78439391,"dep35":70.1,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["PROFESSOR BONATTO",2050000],["SOFIA CAVEDON",360000],["CAPITÃO MARTIM",300000]],"est_rank":0},{"nome":"Gravataí","municipio":"GRAVATAÍ","score":44,"situacao":"crescendo","votos":30,"votos18":327,"emenda":0,"emendaFed":5095600,"gap":82609,"share":0.0,"leite":38.9,"tend":"↓","regiao":"Região Metropolitana","acao":"82k votos conservadores que ainda não te conhecem. Grande chance.","icms":704906963,"conv":19215865,"dep35":72.7,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[],"est_rank":0},{"nome":"São Leopoldo","municipio":"SÃO LEOPOLDO","score":43,"situacao":"crescendo","votos":54,"votos18":72,"emenda":0,"emendaFed":8210203,"gap":63631,"share":0.0,"leite":41.9,"tend":"↓","regiao":"Região Metropolitana","acao":"63k votos disponíveis. Vale uma visita estruturada.","icms":594926534,"conv":11019058,"dep35":72.7,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["MIGUEL ROSSETTO",1530000],["DELEGADO ZUCCO",700000],["SOFIA CAVEDON",400000]],"est_rank":0},{"nome":"Santa Cruz Do Sul","municipio":"SANTA CRUZ DO SUL","score":41,"situacao":"crescendo","votos":78,"votos18":78,"emenda":0,"emendaFed":2156704,"gap":50392,"share":0.1,"leite":43.2,"tend":"→","regiao":"Planalto","acao":"50k votos disponíveis. Vale uma visita estruturada.","icms":507369956,"conv":40630370,"dep35":74.9,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["KELLY MORAES",2350000],["GAÚCHO DA GERAL",300000],["ELTON WEBER",200000]],"est_rank":0},{"nome":"Pantano Grande","municipio":"PANTANO GRANDE","score":41,"situacao":"crescendo","votos":511,"votos18":652,"emenda":100000,"emendaFed":1387500,"gap":2064,"share":7.7,"leite":59.6,"tend":"↓","regiao":"Fronteira Oeste","acao":"Você investiu aqui e está performando. Manter presença.","icms":44642831,"conv":5804116,"dep35":74.1,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["ALOÍSIO CLASSMANN",100000],["DELEGADA NADINE",100000],["KELLY MORAES",100000]],"est_rank":8},{"nome":"Tupanciretã","municipio":"TUPANCIRETÃ","score":41,"situacao":"crescendo","votos":694,"votos18":104,"emenda":0,"emendaFed":2020261,"gap":5684,"share":5.3,"leite":54.3,"tend":"↑","regiao":"Planalto","acao":"Território para desenvolver com investimento direto.","icms":120612420,"conv":6031875,"dep35":74.8,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["PEDRO PEREIRA",150000],["FREDERICO ANTUNES",150000],["DIRCEU FRANCISCON",140000]],"est_rank":2},{"nome":"Alvorada","municipio":"ALVORADA","score":40,"situacao":"crescendo","votos":55,"votos18":64,"emenda":0,"emendaFed":3643729,"gap":47974,"share":0.1,"leite":44.0,"tend":"→","regiao":"Região Metropolitana","acao":"47k votos disponíveis. Vale uma visita estruturada.","icms":215557634,"conv":45074042,"dep35":68.4,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["STELA FARIAS",2550000],["RODRIGO LORENZONI",700000],["ELIZANDRO SABINO",494000]],"est_rank":0},{"nome":"Quaraí","municipio":"QUARAÍ","score":40,"situacao":"crescendo","votos":975,"votos18":821,"emenda":0,"emendaFed":661480,"gap":5383,"share":7.1,"leite":54.5,"tend":"↑","regiao":"Fronteira Oeste","acao":"Território para desenvolver com investimento direto.","icms":84158176,"conv":6144346,"dep35":74.4,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[],"est_rank":0},{"nome":"Rio Grande","municipio":"RIO GRANDE","score":40,"situacao":"crescendo","votos":16,"votos18":19,"emenda":0,"emendaFed":4915442,"gap":43243,"share":0.0,"leite":63.7,"tend":"↓","regiao":"Sul","acao":"43k votos disponíveis. Vale uma visita estruturada.","icms":620017915,"conv":51774297,"dep35":74.0,"macro":["Região historicamente difícil. Foco em prefeitos aliados e lideranças locais. Ev"],"est_top3":[["BRUNA RODRIGUES",200000],["CAPITÃO MARTIM",150000],["SOFIA CAVEDON",150000]],"est_rank":0},{"nome":"São Borja","municipio":"SÃO BORJA","score":38,"situacao":"crescendo","votos":857,"votos18":1164,"emenda":325000,"emendaFed":3803112,"gap":14239,"share":2.4,"leite":55.2,"tend":"↓","regiao":"Fronteira Oeste","acao":"Você investiu aqui e está performando. Manter presença.","icms":210707166,"conv":12393631,"dep35":74.8,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["JULIANA BRIZOLA",700000],["FREDERICO ANTUNES",325000],["ERNANI POLO",150000]],"est_rank":2},{"nome":"Jaquirana","municipio":"JAQUIRANA","score":38,"situacao":"crescendo","votos":211,"votos18":3,"emenda":50000,"emendaFed":199985,"gap":1228,"share":7.7,"leite":43.0,"tend":"↑","regiao":"Missões","acao":"Você investiu mas tem poucos votos. Precisa aparecer mais.","icms":19755019,"conv":2331479,"dep35":74.4,"macro":["Área em crescimento recente. Identidade regional forte — conteúdo localizado ger"],"est_top3":[["NERI O CARTEIRO",350000],["KAKÁ D´ÁVILA",100000],["CARLOS BÚRIGO",50000]],"est_rank":0},{"nome":"Esteio","municipio":"ESTEIO","score":37,"situacao":"oportunidade","votos":43,"votos18":38,"emenda":0,"emendaFed":4543248,"gap":25155,"share":0.1,"leite":43.2,"tend":"↑","regiao":"Região Metropolitana","acao":"25k votos disponíveis. Vale uma visita estruturada.","icms":330371901,"conv":18863266,"dep35":74.2,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["MIGUEL ROSSETTO",500000],["MATHEUS GOMES",200000],["DEPUTADO(A) VILMAR LOURENÇO",100000]],"est_rank":0},{"nome":"São Gabriel","municipio":"SÃO GABRIEL","score":36,"situacao":"oportunidade","votos":831,"votos18":618,"emenda":425000,"emendaFed":3665000,"gap":15545,"share":2.4,"leite":53.4,"tend":"↑","regiao":"Fronteira Oeste","acao":"Você investiu aqui e está performando. Manter presença.","icms":201278523,"conv":9401596,"dep35":74.9,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["AIRTON LIMA",400000],["FREDERICO ANTUNES",275000],["ADRIANA LARA",200000]],"est_rank":2},{"nome":"Lajeado","municipio":"LAJEADO","score":36,"situacao":"oportunidade","votos":32,"votos18":9,"emenda":0,"emendaFed":4610294,"gap":31539,"share":0.1,"leite":38.2,"tend":"↑","regiao":"Planalto","acao":"31k votos disponíveis. Vale uma visita estruturada.","icms":319891941,"conv":34163127,"dep35":73.7,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["AIRTON ARTUS",300000],["ELIZANDRO SABINO",250000],["FELIPE CAMOZZATO",150000]],"est_rank":0},{"nome":"Erechim","municipio":"ERECHIM","score":36,"situacao":"oportunidade","votos":12,"votos18":36,"emenda":0,"emendaFed":3064611,"gap":39846,"share":0.0,"leite":39.9,"tend":"↓","regiao":"Planalto","acao":"39k votos disponíveis. Vale uma visita estruturada.","icms":353205646,"conv":25366324,"dep35":74.9,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["PAPARICO BACCHI",634000],["LEONEL RADDE",150000],["ANY ORTIZ",100000]],"est_rank":0},{"nome":"Guaíba","municipio":"GUAÍBA","score":36,"situacao":"oportunidade","votos":41,"votos18":45,"emenda":0,"emendaFed":2590499,"gap":29031,"share":0.1,"leite":47.6,"tend":"→","regiao":"Região Metropolitana","acao":"29k votos disponíveis. Vale uma visita estruturada.","icms":565985227,"conv":10075099,"dep35":73.0,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[],"est_rank":0},{"nome":"Cacequi","municipio":"CACEQUI","score":36,"situacao":"oportunidade","votos":320,"votos18":187,"emenda":100000,"emendaFed":400000,"gap":2524,"share":4.8,"leite":58.0,"tend":"↑","regiao":"Fronteira Oeste","acao":"Você investiu mas tem poucos votos. Precisa aparecer mais.","icms":58729439,"conv":4689426,"dep35":78.1,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["LUÍS AUGUSTO LARA",300000],["BETO FANTINEL",100000],["ADRIANA LARA",100000]],"est_rank":5},{"nome":"Cachoeirinha","municipio":"CACHOEIRINHA","score":36,"situacao":"oportunidade","votos":25,"votos18":84,"emenda":0,"emendaFed":4257117,"gap":43592,"share":0.0,"leite":39.6,"tend":"↓","regiao":"Região Metropolitana","acao":"43k votos disponíveis. Vale uma visita estruturada.","icms":389209611,"conv":46749976,"dep35":73.0,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["PATRÍCIA ALBA",550000],["ELIZANDRO SABINO",450000],["ANY ORTIZ",250000]],"est_rank":0},{"nome":"Bagé","municipio":"BAGÉ","score":36,"situacao":"oportunidade","votos":170,"votos18":257,"emenda":0,"emendaFed":4639505,"gap":30260,"share":0.2,"leite":58.6,"tend":"↓","regiao":"Sul","acao":"30k votos disponíveis. Vale uma visita estruturada.","icms":255127111,"conv":30533431,"dep35":73.9,"macro":["Região historicamente difícil. Foco em prefeitos aliados e lideranças locais. Ev"],"est_top3":[],"est_rank":0},{"nome":"Santa Margarida Do Sul","municipio":"SANTA MARGARIDA DO SUL","score":36,"situacao":"oportunidade","votos":112,"votos18":16,"emenda":0,"emendaFed":197500,"gap":959,"share":5.2,"leite":51.6,"tend":"↑","regiao":"Outros","acao":"Território para desenvolver com investimento direto.","icms":28966422,"conv":4705611,"dep35":78.6,"macro":["Eleitorado maduro (79% com 35 anos ou mais): rádio, programas religiosos e event"],"est_top3":[["AIRTON ARTUS",75000],["DR THIAGO DUARTE",50000]],"est_rank":0},{"nome":"Sapucaia Do Sul","municipio":"SAPUCAIA DO SUL","score":36,"situacao":"oportunidade","votos":33,"votos18":52,"emenda":0,"emendaFed":6291766,"gap":36074,"share":0.0,"leite":41.6,"tend":"↓","regiao":"Região Metropolitana","acao":"36k votos disponíveis. Vale uma visita estruturada.","icms":271630200,"conv":30385200,"dep35":72.7,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["VILMAR LOURENÇO",1350000],["DEPUTADO(A) VILMAR LOURENÇO",800000],["PROFESSOR ISSUR KOCH",200000]],"est_rank":0},{"nome":"Ijuí","municipio":"IJUÍ","score":35,"situacao":"oportunidade","votos":24,"votos18":17,"emenda":0,"emendaFed":13798531,"gap":28978,"share":0.1,"leite":44.6,"tend":"↑","regiao":"Missões","acao":"28k votos disponíveis. Vale uma visita estruturada.","icms":272928328,"conv":50267773,"dep35":75.3,"macro":["Área em crescimento recente. Identidade regional forte — conteúdo localizado ger"],"est_top3":[],"est_rank":0},{"nome":"Bento Gonçalves","municipio":"BENTO GONÇALVES","score":35,"situacao":"oportunidade","votos":14,"votos18":28,"emenda":0,"emendaFed":5483655,"gap":51333,"share":0.0,"leite":29.7,"tend":"↓","regiao":"Serra Gaúcha","acao":"51k votos disponíveis. Vale uma visita estruturada.","icms":452162746,"conv":16399684,"dep35":74.8,"macro":["Pautar economia local: turismo, vitivinicultura e indústria. Aproveitar o alinha"],"est_top3":[["GUILHERME PASIN",1300000],["PEPE VARGAS",600000],["FRAN SOMENSI",300000]],"est_rank":0},{"nome":"Santo Ângelo","municipio":"SANTO ÂNGELO","score":34,"situacao":"oportunidade","votos":185,"votos18":11,"emenda":0,"emendaFed":8767271,"gap":22913,"share":0.4,"leite":50.6,"tend":"↑","regiao":"Missões","acao":"22k votos disponíveis. Vale uma visita estruturada.","icms":200131866,"conv":64650383,"dep35":74.4,"macro":["Área em crescimento recente. Identidade regional forte — conteúdo localizado ger"],"est_top3":[],"est_rank":0},{"nome":"Caçapava Do Sul","municipio":"CAÇAPAVA DO SUL","score":34,"situacao":"oportunidade","votos":258,"votos18":592,"emenda":0,"emendaFed":1110459,"gap":6247,"share":1.3,"leite":56.8,"tend":"↓","regiao":"Outros","acao":"Território para desenvolver com investimento direto.","icms":109549425,"conv":9817438,"dep35":76.9,"macro":["Eleitorado maduro (77% com 35 anos ou mais): rádio, programas religiosos e event"],"est_top3":[],"est_rank":0},{"nome":"Carazinho","municipio":"CARAZINHO","score":33,"situacao":"oportunidade","votos":8,"votos18":9,"emenda":0,"emendaFed":2237850,"gap":22085,"share":0.0,"leite":49.1,"tend":"→","regiao":"Planalto","acao":"22k votos disponíveis. Vale uma visita estruturada.","icms":299244774,"conv":16646779,"dep35":74.4,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["JULIANA BRIZOLA",200000],["RODRIGO LORENZONI",200000],["MATEUS WESP",185000]],"est_rank":0},{"nome":"Jaguarão","municipio":"JAGUARÃO","score":33,"situacao":"oportunidade","votos":162,"votos18":419,"emenda":0,"emendaFed":1941321,"gap":6161,"share":1.0,"leite":68.3,"tend":"↓","regiao":"Fronteira Oeste","acao":"Território para desenvolver com investimento direto.","icms":91594918,"conv":5993054,"dep35":76.0,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["ZÉ NUNES",250000],["LUCIANO SILVEIRA",200000],["ANY ORTIZ",100000]],"est_rank":0},{"nome":"Rosário Do Sul","municipio":"ROSÁRIO DO SUL","score":33,"situacao":"oportunidade","votos":501,"votos18":508,"emenda":0,"emendaFed":1413543,"gap":10005,"share":2.1,"leite":58.5,"tend":"→","regiao":"Fronteira Oeste","acao":"Território para desenvolver com investimento direto.","icms":133721595,"conv":19040532,"dep35":75.2,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[],"est_rank":0},{"nome":"Santa Rosa","municipio":"SANTA ROSA","score":33,"situacao":"oportunidade","votos":60,"votos18":3,"emenda":0,"emendaFed":22387170,"gap":29756,"share":0.1,"leite":44.6,"tend":"↑","regiao":"Missões","acao":"29k votos disponíveis. Vale uma visita estruturada.","icms":246197714,"conv":50734821,"dep35":74.3,"macro":["Área em crescimento recente. Identidade regional forte — conteúdo localizado ger"],"est_top3":[["JEFERSON FERNANDES",400000],["ALOÍSIO CLASSMANN",350000],["ANY ORTIZ",315000]],"est_rank":0},{"nome":"Cruz Alta","municipio":"CRUZ ALTA","score":33,"situacao":"oportunidade","votos":5,"votos18":58,"emenda":0,"emendaFed":12463810,"gap":18878,"share":0.0,"leite":50.9,"tend":"↓","regiao":"Planalto","acao":"Território para desenvolver com investimento direto.","icms":219364021,"conv":43608437,"dep35":74.7,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["RAFAEL BRAGA",1625000],["JEFERSON FERNANDES",200000],["EDEGAR PRETTO",100000]],"est_rank":0},{"nome":"Osório","municipio":"OSÓRIO","score":32,"situacao":"oportunidade","votos":15,"votos18":21,"emenda":0,"emendaFed":1342095,"gap":14211,"share":0.1,"leite":48.7,"tend":"↓","regiao":"Outros","acao":"Território para desenvolver com investimento direto.","icms":143702881,"conv":19354468,"dep35":74.6,"macro":["Gap crítico: 14k votos conservadores disponíveis com apenas 0.1% convertidos. Aç"],"est_top3":[],"est_rank":0},{"nome":"Charqueadas","municipio":"CHARQUEADAS","score":32,"situacao":"oportunidade","votos":11,"votos18":4,"emenda":0,"emendaFed":1266527,"gap":8664,"share":0.1,"leite":51.0,"tend":"↑","regiao":"Região Metropolitana","acao":"Território para desenvolver com investimento direto.","icms":112433083,"conv":7773675,"dep35":74.6,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["MATHEUS GOMES",300000],["LAURA SITO",200000],["PEDRO PEREIRA",200000]],"est_rank":0},{"nome":"Santa Vitória Do Palmar","municipio":"SANTA VITÓRIA DO PALMAR","score":32,"situacao":"oportunidade","votos":7,"votos18":10,"emenda":0,"emendaFed":1964160,"gap":6526,"share":0.0,"leite":68.3,"tend":"↓","regiao":"Sul","acao":"Território para desenvolver com investimento direto.","icms":190588350,"conv":5057607,"dep35":75.1,"macro":["Região historicamente difícil. Foco em prefeitos aliados e lideranças locais. Ev"],"est_top3":[["ZÉ NUNES",440000],["PEDRO PEREIRA",300000],["CARLOS BÚRIGO",250000]],"est_rank":0},{"nome":"Montenegro","municipio":"MONTENEGRO","score":32,"situacao":"oportunidade","votos":9,"votos18":20,"emenda":0,"emendaFed":1981251,"gap":20254,"share":0.0,"leite":45.8,"tend":"↓","regiao":"Região Metropolitana","acao":"20k votos disponíveis. Vale uma visita estruturada.","icms":343260618,"conv":16833715,"dep35":73.7,"macro":["Abordagem digital com impulsionamento em bairros onde Leite teve mais de 55%. Pr"],"est_top3":[["AIRTON LIMA",550000],["ELTON WEBER",170000],["EDIVILSON BRUM",100000]],"est_rank":0},{"nome":"Farroupilha","municipio":"FARROUPILHA","score":32,"situacao":"oportunidade","votos":34,"votos18":31,"emenda":0,"emendaFed":5405349,"gap":31798,"share":0.1,"leite":35.7,"tend":"→","regiao":"Serra Gaúcha","acao":"31k votos disponíveis. Vale uma visita estruturada.","icms":307582633,"conv":17660855,"dep35":74.0,"macro":["Pautar economia local: turismo, vitivinicultura e indústria. Aproveitar o alinha"],"est_top3":[["FRAN SOMENSI",810000],["PROF CLAUDIO BRANCHIERI",350000],["CAPITÃO MARTIM",300000]],"est_rank":0},{"nome":"Júlio De Castilhos","municipio":"JÚLIO DE CASTILHOS","score":32,"situacao":"oportunidade","votos":30,"votos18":13,"emenda":0,"emendaFed":2185472,"gap":5385,"share":0.2,"leite":52.8,"tend":"↑","regiao":"Outros","acao":"Território para desenvolver com investimento direto.","icms":106821986,"conv":9448429,"dep35":74.0,"macro":["Analisar perfil local para definir estratégia de penetração."],"est_top3":[],"est_rank":0},{"nome":"Cachoeira Do Sul","municipio":"CACHOEIRA DO SUL","score":32,"situacao":"oportunidade","votos":36,"votos18":169,"emenda":0,"emendaFed":37724230,"gap":28108,"share":0.1,"leite":52.7,"tend":"↓","regiao":"Centro","acao":"28k votos disponíveis. Vale uma visita estruturada.","icms":235079132,"conv":8621030,"dep35":76.4,"macro":["Região com eleitorado pulverizado. Apostar em presença física e eventos locais. "],"est_top3":[["CLÁUDIO TATSCH",3400000],["AIRTON LIMA",750000],["ZILÁ BREITENBACH",550000]],"est_rank":0},{"nome":"Maçambará","municipio":"MAÇAMBARÁ","score":32,"situacao":"oportunidade","votos":103,"votos18":380,"emenda":0,"emendaFed":100000,"gap":1507,"share":3.4,"leite":61.5,"tend":"↓","regiao":"Fronteira Oeste","acao":"Território para desenvolver com investimento direto.","icms":48186015,"conv":2713190,"dep35":74.6,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[],"est_rank":0},{"nome":"São Jerônimo","municipio":"SÃO JERÔNIMO","score":31,"situacao":"oportunidade","votos":9,"votos18":12,"emenda":0,"emendaFed":1274710,"gap":6074,"share":0.1,"leite":56.9,"tend":"↓","regiao":"Outros","acao":"Território para desenvolver com investimento direto.","icms":52426141,"conv":24282892,"dep35":74.1,"macro":["Analisar perfil local para definir estratégia de penetração."],"est_top3":[],"est_rank":0},{"nome":"São Sepé","municipio":"SÃO SEPÉ","score":31,"situacao":"oportunidade","votos":21,"votos18":34,"emenda":0,"emendaFed":1244250,"gap":5766,"share":0.1,"leite":59.0,"tend":"↓","regiao":"Centro","acao":"Território para desenvolver com investimento direto.","icms":92109141,"conv":7427680,"dep35":75.6,"macro":["Região com eleitorado pulverizado. Apostar em presença física e eventos locais. "],"est_top3":[],"est_rank":0},{"nome":"Sapiranga","municipio":"SAPIRANGA","score":31,"situacao":"oportunidade","votos":145,"votos18":153,"emenda":0,"emendaFed":15137204,"gap":28067,"share":0.3,"leite":40.3,"tend":"→","regiao":"Outros","acao":"28k votos disponíveis. Vale uma visita estruturada.","icms":179818588,"conv":18768160,"dep35":72.1,"macro":["Gap crítico: 28k votos conservadores disponíveis com apenas 0.5% convertidos. Aç"],"est_top3":[["GAÚCHO DA GERAL",370000],["ISSUR KOCH",320000],["JOEL WILHELM",250000]],"est_rank":0},{"nome":"Soledade","municipio":"SOLEDADE","score":31,"situacao":"oportunidade","votos":2,"votos18":3,"emenda":0,"emendaFed":2303891,"gap":8546,"share":0.0,"leite":55.6,"tend":"↓","regiao":"Planalto","acao":"Território para desenvolver com investimento direto.","icms":98214545,"conv":17214035,"dep35":72.6,"macro":["Agronegócio e cooperativismo como pautas centrais. Rádio AM ainda tem forte pene"],"est_top3":[["DIRCEU FRANCISCON",580000],["ADOLFO BRITO",150000],["SILVANA COVATTI",150000]],"est_rank":0},{"nome":"Rio Pardo","municipio":"RIO PARDO","score":31,"situacao":"oportunidade","votos":17,"votos18":25,"emenda":0,"emendaFed":5814943,"gap":9869,"share":0.1,"leite":59.8,"tend":"↓","regiao":"Centro","acao":"Território para desenvolver com investimento direto.","icms":109494312,"conv":18687618,"dep35":75.0,"macro":["Região com eleitorado pulverizado. Apostar em presença física e eventos locais. "],"est_top3":[["EDIVILSON BRUM",1150000],["CLAIR KUHN",950000],["EDSON BRUM",500000]],"est_rank":0},{"nome":"Camaquã","municipio":"CAMAQUÃ","score":31,"situacao":"oportunidade","votos":3,"votos18":9,"emenda":0,"emendaFed":2728667,"gap":22435,"share":0.0,"leite":58.1,"tend":"↓","regiao":"Sul","acao":"22k votos disponíveis. Vale uma visita estruturada.","icms":203731757,"conv":17902491,"dep35":74.8,"macro":["Região historicamente difícil. Foco em prefeitos aliados e lideranças locais. Ev"],"est_top3":[["ZÉ NUNES",530000],["MARCUS VINÍCIUS",500000],["CAPITÃO MARTIM",250000]],"est_rank":0},{"nome":"São Francisco De Assis","municipio":"SÃO FRANCISCO DE ASSIS","score":31,"situacao":"oportunidade","votos":189,"votos18":263,"emenda":0,"emendaFed":1774850,"gap":4373,"share":1.6,"leite":59.1,"tend":"↓","regiao":"Fronteira Oeste","acao":"Território para desenvolver com investimento direto.","icms":75755898,"conv":8102355,"dep35":76.7,"macro":["Região da fronteira: pautar segurança pública, agropecuária e integração com o M"],"est_top3":[["GERSON BURMANN",200000],["VALDECI OLIVEIRA",200000],["ELIZANDRO SABINO",100000]],"est_rank":0},{"nome":"Santiago","municipio":"SANTIAGO","score":31,"situacao":"oportunidade","votos":35,"votos18":11,"emenda":0,"emendaFed":1898077,"gap":15219,"share":0.1,"leite":46.6,"tend":"↑","regiao":"Centro","acao":"Território para desenvolver com investimento direto.","icms":139429531,"conv":24172314,"dep35":76.4,"macro":["Região com eleitorado pulverizado. Apostar em presença física e eventos locais. "],"est_top3":[["AIRTON LIMA",100000],["DELEGADA NADINE",100000],["VALDECI OLIVEIRA",100000]],"est_rank":0},{"nome":"Venâncio Aires","municipio":"VENÂNCIO AIRES","score":31,"situacao":"oportunidade","votos":4,"votos18":12,"emenda":0,"emendaFed":4922850,"gap":25885,"share":0.0,"leite":40.6,"tend":"↓","regiao":"Outros","acao":"25k votos disponíveis. Vale uma visita estruturada.","icms":235709032,"conv":25410961,"dep35":74.8,"macro":["Gap crítico: 26k votos conservadores disponíveis com apenas 0.0% convertidos. Aç"],"est_top3":[],"est_rank":0}];
+
+/* ── NAVEGAÇÃO ── */
+function goTo(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('sec-' + id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+/* ── ACORDEÃO ── */
+function tog(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* ── FORMATAÇÃO ── */
+function fv(v) {
+  if (!v) return '—';
+  if (v >= 1e6) return 'R$' + (v/1e6).toFixed(1) + 'M';
+  if (v >= 1e3) return 'R$' + Math.round(v/1e3) + 'k';
+  return 'R$' + v;
+}
+function fn(n) {
+  if (!n) return '0';
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return Math.round(n/1e3) + 'k';
+  return String(n);
+}
+
+/* ── MUNICÍPIOS ── */
+const lists = {
+  forte: document.getElementById('ml-forte'),
+  crescendo: document.getElementById('ml-crescendo'),
+  oport: document.getElementById('ml-oport'),
+};
+const lbls = {
+  forte: document.getElementById('mun-lbl-forte'),
+  crescendo: document.getElementById('mun-lbl-cresc'),
+  oport: document.getElementById('mun-lbl-op'),
+};
+
+function corSit(s) {
+  if (s === 'forte')    return {bg:'#dcfce7',fg:'#166534',tag:'tag-g',txt:'Reduto'};
+  if (s === 'crescendo') return {bg:'#fef3c7',fg:'#92400e',tag:'tag-a',txt:'Crescendo'};
+  return {bg:'#dbeafe',fg:'#1e3a5f',tag:'tag-b',txt:'Oportunidade'};
+}
+
+function togPan(g) {
+  const box = document.getElementById('pan-' + g);
+  const arr = document.getElementById('arr-' + g);
+  if (!box) return;
+  if (box.style.display !== 'none') {
+    box.style.display = 'none';
+    if (arr) arr.textContent = '›';
+    return;
+  }
+  const panos = {"forte": {"cor": "#00923F", "bgcor": "#e8f8ef", "titulo": "Seus Redutos", "votos": "23k", "gap": "416k", "emenda": "R$5M", "desc": "Território dominado. Continue presente e aumente o share. Não deixe concorrentes entrarem."}, "crescendo": {"cor": "#f59e0b", "bgcor": "#fffbeb", "titulo": "Crescendo", "votos": "7k", "gap": "975k", "emenda": "R$1M", "desc": "975k votos disponíveis — o maior reservatório. Cidades que estão te reconhecendo mas ainda não converteram. Investimento aqui tem alto retorno."}, "oport": {"cor": "#004A9F", "bgcor": "#e8f0fc", "titulo": "Para Desenvolver", "votos": "4k", "gap": "694k", "emenda": "R$525k", "desc": "Pouca presença ainda. Requerem emenda ou visita para começar a mover o ponteiro. ROI menor no curto prazo, mas volume enorme."}};
+  const d = panos[g];
+  box.style.display = 'block';
+  if (arr) arr.textContent = '‹';
+  box.innerHTML = '<div style="background:' + d.bgcor + ';border-left:3px solid ' + d.cor + ';padding:12px 14px;margin:0 14px 4px;border-radius:0 8px 8px 0">'
+    + '<div style="font-size:12px;font-weight:700;color:' + d.cor + ';margin-bottom:8px">' + d.titulo + '</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">'
+    + '<div style="background:rgba(0,0,0,.05);border-radius:7px;padding:7px;text-align:center"><div style="font-size:16px;font-weight:700">' + d.votos + '</div><div style="font-size:10px;color:var(--muted)">Votos seus</div></div>'
+    + '<div style="background:rgba(0,0,0,.05);border-radius:7px;padding:7px;text-align:center"><div style="font-size:16px;font-weight:700">' + d.gap + '</div><div style="font-size:10px;color:var(--muted)">Disponíveis</div></div>'
+    + '<div style="background:rgba(0,0,0,.05);border-radius:7px;padding:7px;text-align:center"><div style="font-size:16px;font-weight:700">' + d.emenda + '</div><div style="font-size:10px;color:var(--muted)">Emenda sua</div></div>'
+    + '</div>'
+    + '<div style="font-size:12.5px;color:var(--muted)">' + d.desc + '</div>'
+    + '</div>';
+}
+
+function renderMuns(filtro) {
+  Object.values(lists).forEach(el => { if(el) el.innerHTML = ''; });
+  Object.values(lbls).forEach(el => { if(el) el.style.display = ''; });
+  const f = (filtro || '').toLowerCase();
+  const vis = f ? D.filter(d => d.nome.toLowerCase().includes(f)) : D;
+
+  vis.forEach(d => {
+    const c = corSit(d.situacao);
+    const id = 'mi-' + d.municipio.replace(/[^a-z0-9]/gi,'');
+    const tendTag = d.tend === '↑'
+      ? '<span class="tag tag-g">↑ subindo</span>'
+      : d.tend === '↓'
+      ? '<span class="tag" style="background:var(--rb);color:var(--r);border:1px solid var(--rbd)">↓ caindo</span>' : '';
+
+    let compRows = '';
+    if (d.est_top3 && d.est_top3.length) {
+      compRows = '<div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:12px 0 6px">Outros deputados investindo aqui</div>';
+      d.est_top3.forEach(p => {
+        const isYou = p[0].toUpperCase().includes('FREDERICO');
+        compRows += '<div class="cr' + (isYou?' eu':'') + '">'
+          + '<div class="cr-n">' + p[0].split(' ').slice(-2).join(' ') + (isYou ? ' <b>(você)</b>' : '') + '</div>'
+          + '<div class="cr-v">' + fv(p[1]) + '</div></div>';
+      });
+    }
+
+    const macroHtml = d.macro && d.macro[0]
+      ? '<div class="al al-b" style="margin-top:10px;font-size:12px">' + d.macro[0] + '</div>' : '';
+
+    const html = `<div class="mi" id="${id}">
+      <div class="mi-hd" onclick="togMun('${id}')">
+        <div class="mi-score" style="background:${c.bg};color:${c.fg}">${d.score}</div>
+        <div class="mi-info">
+          <div class="mi-name">${d.nome}</div>
+          <div class="mi-tags">
+            <span class="tag ${c.tag}">${c.txt}</span>
+            <span class="tag tag-n">${d.regiao}</span>
+            ${tendTag}
+          </div>
+          <div class="mi-hint">${d.acao}</div>
+        </div>
+        <div class="mi-arr">›</div>
+      </div>
+      <div class="mi-bd"><div class="mi-in">
+        <div class="sg">
+          <div class="st"><div class="st-v">${fn(d.votos)}</div><div class="st-l">Votos 2022</div></div>
+          <div class="st"><div class="st-v">${fn(d.votos18)}</div><div class="st-l">Votos 2018</div></div>
+          <div class="st"><div class="st-v" style="color:${d.emenda>0?'var(--a)':'var(--muted)'}">${d.emenda>0?fv(d.emenda):'—'}</div><div class="st-l">Sua emenda</div></div>
+          <div class="st"><div class="st-v">${fn(d.gap)}</div><div class="st-l">Votos disponíveis</div></div>
+          <div class="st"><div class="st-v" style="color:var(--b)">${fv(d.emendaFed)}</div><div class="st-l">Emendas federais</div></div>
+          <div class="st"><div class="st-v" style="color:#065f46">${fv(d.icms)}</div><div class="st-l">ICMS da cidade</div></div>
+        </div>
+        ${compRows}
+        ${macroHtml}
+        <div class="ai-box" id="ai-${id}">Toque no botão para gerar uma análise personalizada desta cidade.</div>
+        <button class="ai-btn" id="btn-${id}" onclick="gerarAI('${d.municipio}','${id}')">✦ Análise com IA</button>
+      </div></div>
+    </div>`;
+
+    const dest = d.situacao === 'forte' ? lists.forte
+               : d.situacao === 'crescendo' ? lists.crescendo
+               : lists.oport;
+    dest.insertAdjacentHTML('beforeend', html);
+  });
+
+  // Esconde grupos vazios
+  ['forte','crescendo','oport'].forEach(k => {
+    if (lbls[k] && !lists[k].innerHTML) lbls[k].style.display = 'none';
+  });
+}
+
+function togMun(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function filtrarMuns(v) { renderMuns(v); }
+renderMuns();
+
+/* ── EMENDAS LISTA ── */
+const emOrdem = D.filter(d => d.emenda > 0).sort((a,b) => b.emenda - a.emenda);
+const cores = ['#16a34a','#1e40af','#92400e','#7c3aed','#0369a1','#166534','#b45309','#0f766e','#9333ea'];
+emOrdem.forEach((d,i) => {
+  document.getElementById('em-lista').insertAdjacentHTML('beforeend',
+    `<div class="em-row">
+       <div class="em-dot" style="background:${cores[i%cores.length]}"></div>
+       <div class="em-nome">${d.nome}</div>
+       <div class="em-val">${fv(d.emenda)}</div>
+     </div>`);
+});
+
+/* ── IA POR MUNICÍPIO ── */
+async function gerarAI(municipio, id) {
+  const d = D.find(x => x.municipio === municipio);
+  const box = document.getElementById('ai-' + id);
+  const btn = document.getElementById('btn-' + id);
+  if (!box || !btn) return;
+  btn.disabled = true; btn.textContent = 'Gerando...';
+  box.classList.remove('loaded'); box.textContent = '';
+
+  const prompt = `Você é um estrategista eleitoral de confiança, conversando diretamente com Frederico Antunes — deputado estadual RS há 6 mandatos, candidato ao Senado em 2026, agora no PSD. Ele está com 9,1% na pesquisa.
+
+CIDADE: ${d.nome} (${d.regiao})
+Seus votos: 2022 = ${d.votos}, 2018 = ${d.votos18} (${d.tend==='↑'?'melhorou':d.tend==='↓'?'caiu':'estável'})
+Emenda estadual sua: ${d.emenda > 0 ? 'R$' + d.emenda/1000 + 'k' : 'nenhuma'}
+Votos de direita ainda não convertidos: ${fn(d.gap)}
+Leite 2T 2022: ${d.leite}%
+
+Escreva 3 parágrafos curtos e diretos, como se você fosse um amigo experiente e honesto:
+1. Como está realmente sua situação aqui (sem enrolação)
+2. O que fazer de concreto nos próximos 3 meses
+3. Um alerta ou oportunidade específica que ele não pode ignorar
+
+Sem bullet points. Sem jargão técnico. Tom: direto e humano.`;
+
+  try {
+    const r = await fetch('/api/ai', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        messages: [{role:'user',content: prompt}]
+      })
+    });
+    const j = await r.json();
+    box.textContent = j.content?.[0]?.text || 'Não foi possível gerar.';
+    box.classList.add('loaded');
+    btn.textContent = '↺ Gerar de novo';
+  } catch(e) {
+    box.textContent = 'Erro de conexão.';
+  }
+  btn.disabled = false;
+}
+
+/* ── NOTÍCIAS ── */
+async function buscarNews(prompt, resultId, btn) {
+  const div = document.getElementById(resultId);
+  if (!div) return;
+  const arr = btn.querySelector('.news-btn-arr');
+  const subEl = btn.querySelector('.news-btn-sub');
+  const origLabel = subEl ? subEl.textContent : '';
+  if (subEl) subEl.textContent = 'Buscando...';
+  if (arr) arr.style.transform = 'rotate(90deg)';
+  div.style.display = 'block';
+  div.textContent = 'Consultando a internet...';
+  try {
+    const r = await fetch('/api/ai', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{"type":"web_search_20250305","name":"web_search"}],
+        messages: [{role:'user',content:prompt}]
+      })
+    });
+    const j = await r.json();
+    const txt = (j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(' ') || 'Sem resultado.';
+    div.textContent = txt;
+  } catch(e) {
+    div.textContent = 'Erro de conexão. Tente novamente.';
+  }
+  if (subEl) subEl.textContent = origLabel;
+  if (arr) arr.style.transform = '';
+}
+
+
+
+renderMuns();
+</script>
