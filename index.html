@@ -12,7 +12,7 @@ body{font-family:system-ui,sans-serif;background:#f5f5f3;color:#1a1a18;font-size
 .tbtn{background:transparent;border:1px solid #444;border-radius:5px;color:#ccc;font-size:11px;padding:3px 10px;cursor:pointer}
 .tbtn:hover{background:#333}
 .layout{display:grid;grid-template-columns:290px 1fr;height:calc(100vh - 40px)}
-.sb{border-right:1px solid #e0dfd8;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+.sb{border-right:1px solid #e0dfd8;background:#fff;display:flex;flex-direction:column;overflow:hidden;overflow-x:hidden}
 .sb-m{padding:8px;border-bottom:1px solid #f0efe8;display:grid;grid-template-columns:1fr 1fr;gap:5px}
 .smc{background:#f9f9f7;border-radius:7px;padding:6px 9px}
 .smc-v{font-size:14px;font-weight:700}.smc-l{font-size:10px;color:#9ca3af;margin-top:1px}
@@ -129,35 +129,55 @@ body{font-family:system-ui,sans-serif;background:#f5f5f3;color:#1a1a18;font-size
 
     <!-- OVERVIEW -->
     <div class="panel on" id="panel-overview">
-      <div class="g3">
-        <div class="card"><div class="si-v">36.325</div><div class="si-l">Votos 2022</div><div style="font-size:10px;color:#9ca3af;margin-top:4px">↓ 25% vs 2014 · +7,8% vs 2018</div></div>
-        <div class="card"><div class="si-v">R$ 6,5M</div><div class="si-l">Emendas estaduais (Frederico)</div><div style="font-size:10px;color:#9ca3af;margin-top:4px">20 municípios · 2022–2026</div></div>
-        <div class="card"><div class="si-v" id="ov-gap">—</div><div class="si-l">Gap direita não convertido</div></div>
-      </div>
-      <div class="ibox">
-        <div class="it">💰 Correlação emendas × votos — o padrão central</div>
-        <div class="ii"><div class="dot" style="background:#16a34a"></div><b>Uruguaiana:</b> R$ 2,45M em emendas estaduais + R$ 2M federal → 12.866 votos (20% de share). Onde investiu, domina. É o modelo.</div>
-        <div class="ii"><div class="dot" style="background:#ef4444"></div><b>Pelotas:</b> R$ 0 em emendas estaduais + R$ 17,6M federal (12 parlamentares concorrentes) → 45 votos. Território tomado por adversários, Frederico invisível.</div>
-        <div class="ii"><div class="dot" style="background:#f59e0b"></div><b>Porto Alegre:</b> R$ 1,15M estadual vs R$ 359M federal (32 parlamentares) → 0,3% de share. Presença eleitoral completamente fragmentada.</div>
-        <div class="ii"><div class="dot" style="background:#3b82f6"></div><b>Canoas:</b> R$ 100k estadual vs R$ 7,6M federal (11 parlamentares) → crescendo mesmo sub-investido. Potencial enorme se aumentar presença.</div>
-      </div>
-      <div class="ibox">
-        <div class="it">📈 Tendência em 3 fases · 73–77% do eleitorado tem 35+ anos</div>
-        <div class="ii"><div class="dot" style="background:#ef4444"></div><b>2014→2018: queda em 65% dos municípios.</b> Base fragmentada pelo bolsonarismo.</div>
-        <div class="ii"><div class="dot" style="background:#16a34a"></div><b>2018→2022: recuperação em 37 municípios.</b> Canoas ↑↑, Alegrete ↑↑.</div>
-        <div class="ii"><div class="dot" style="background:#9ca3af"></div><b>Rádio, presença física e material impresso têm ROI alto</b> — público maduro, digital sozinho não resolve.</div>
-      </div>
-      <div class="card">
-        <div class="ct">Top parlamentares por emendas destinadas ao RS</div>
-        <div id="parl-list"></div>
-      </div>
-    </div>
 
-    <!-- DETALHE -->
-    <div class="panel" id="panel-detalhe">
-      <div id="det-c" style="text-align:center;padding:28px;color:#9ca3af">
-        <b style="color:#374151;font-size:14px">Selecione um município na lista</b><br><br>
-        Score 5D · Emendas estaduais + federais · Comparativo · Briefing IA
+      <!-- KPIs -->
+      <div class="g3" style="margin-bottom:10px">
+        <div class="card" style="padding:10px 13px"><div class="si-v" style="font-size:18px">36.325</div><div class="si-l">Votos 2022</div><div style="font-size:10px;color:#9ca3af;margin-top:2px">+7,8% vs 2018 · 9,1% na pesquisa</div></div>
+        <div class="card" style="padding:10px 13px"><div class="si-v" style="font-size:18px">R$ 8M</div><div class="si-l">Emendas estaduais 20-25</div><div style="font-size:10px;color:#9ca3af;margin-top:2px">14 municípios · R$7,2M pago</div></div>
+        <div class="card" style="padding:10px 13px"><div class="si-v" id="ov-gap" style="font-size:18px">—</div><div class="si-l">Gap direita (60 mun.)</div><div style="font-size:10px;color:#9ca3af;margin-top:2px">votos conservadores não convertidos</div></div>
+      </div>
+
+      <!-- Panorama filtro ativo — aparece aqui quando filtro aplicado -->
+      <div id="panorama-box" style="display:none;margin-bottom:10px"></div>
+
+      <!-- Gráficos side-by-side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div class="card" style="padding:12px">
+          <div class="ct" style="margin-bottom:8px">Por tipo de território</div>
+          <canvas id="chart-tipo" height="130"></canvas>
+        </div>
+        <div class="card" style="padding:12px">
+          <div class="ct" style="margin-bottom:8px">Votos por região</div>
+          <canvas id="chart-regioes" height="130"></canvas>
+        </div>
+      </div>
+
+      <!-- Insights: emenda x voto -->
+      <div class="ibox" style="margin-bottom:8px">
+        <div class="it">💰 Lei central: onde investiu, domina</div>
+        <div class="ii"><div class="dot" style="background:#16a34a"></div>Municípios <b>com emenda</b> têm share médio de <b>7,6%</b>. Sem emenda: <b>0,9%</b>. O investimento constrói voto — 8× mais eficiente.</div>
+        <div class="ii"><div class="dot" style="background:#16a34a"></div><b>Uruguaiana:</b> R$4M estadual → 12.866 votos, 20% share. <b>Itaqui:</b> R$500k → 2.740 votos, 13,8%. <b>Quaraí:</b> R$450k → 49% do total estadual local.</div>
+        <div class="ii"><div class="dot" style="background:#ef4444"></div><b>Territórios virgens com alto potencial sem nenhum investimento:</b> Caxias (167k gap, R$0 emenda), Pelotas (88k gap, 45 votos — Leite teve 78% lá), Gravataí (83k gap, R$704M ICMS gerado).</div>
+        <div class="ii"><div class="dot" style="background:#f59e0b"></div><b>Porto Alegre:</b> R$1,15M investido mas só 2.540 votos. Alta competição (32 parlamentares, R$359M federal). Precisaria de R$5M+ para mover o ponteiro.</div>
+      </div>
+
+      <!-- Insights: tendência -->
+      <div class="ibox" style="margin-bottom:8px">
+        <div class="it">📈 Tendência 2014→2022 — o que os dados mostram</div>
+        <div class="ii"><div class="dot" style="background:#ef4444"></div><b>40 dos 60 municípios tiveram queda</b> entre 2018 e 2022. Mas quem recebeu emenda consistente recuperou: Canoas ↑22%, Alegrete ↑22%.</div>
+        <div class="ii"><div class="dot" style="background:#16a34a"></div><b>Crescendo em 20 municípios.</b> Padrão: cidades onde a emenda foi contínua (Uruguaiana, Itaqui, Manoel Viana) têm tendência positiva. Cidades pontualmente atendidas, não.</div>
+        <div class="ii"><div class="dot" style="background:#3b82f6"></div><b>A Região Metropolitana tem o maior gap absoluto do estado:</b> 975k votos de direita não convertidos, mas alta competição. Serra Gaúcha: 250k gap — Sanderson (PL) está investindo lá via emendas PIX.</div>
+        <div class="ii"><div class="dot" style="background:#9ca3af"></div><b>73–77% do eleitorado tem 35+ anos</b> em todos os municípios analisados. Esse perfil responde a rádio, presença física e histórico de entrega — não a redes sociais. ROI do digital é baixo nesse campo.</div>
+        <div class="ii"><div class="dot" style="background:#f59e0b"></div><b>4 municípios com Leite >60% no 2T e menos de 200 votos do Frederico:</b> Pelotas (78,1%), Rio Grande (63,7%), Santa Vitória (68,3%), Jaguarão (68,3%). O eleitorado alinhado existe — ele só não chegou ainda.</div>
+      </div>
+
+      <!-- Insights: campo eleitoral -->
+      <div class="ibox">
+        <div class="it">🎯 Campo eleitoral — onde está o voto disponível</div>
+        <div class="ii"><div class="dot" style="background:#1e40af"></div><b>Planalto tem 244k de gap</b> e Frederico não tem emenda na maioria dos municípios. Região historicamente conservadora, bem servida por Dep. Estaduais do campo — aliado potencial de campanha.</div>
+        <div class="ii"><div class="dot" style="background:#16a34a"></div><b>Fronteira Oeste é o reduto consolidado:</b> 11 municípios como reduto, share médio acima de 12%. Heinze (PP) venceu eleição de senador 2018 nesses mesmos municípios — eleitorado fiel ao campo, não ao candidato.</div>
+        <div class="ii"><div class="dot" style="background:#ef4444"></div><b>Ameaça: Sanderson (PL)</b> investiu R$2M em emendas PIX na Serra Gaúcha desde 2023 (Gramado, Canela, Taquara, Erechim) — territórios onde Frederico tem zero presença. É pré-campanha territorial visível nos dados.</div>
+        <div class="ii"><div class="dot" style="background:#f59e0b"></div><b>Maior oportunidade de ROI:</b> municípios com >50k gap + Leite >55% + sem emenda atual = Pelotas, Rio Grande, Bagé, Camaquã. Uma emenda bem direcionada em 2025-2026 pode dobrar votos nesses territórios.</div>
       </div>
     </div>
 
@@ -250,9 +270,9 @@ const regs=[...new Set(D.map(d=>d.regiao).filter(Boolean))].sort();
 const rf=document.getElementById('f-reg');
 regs.forEach(r=>{const b=document.createElement('button');b.className='fb';b.textContent=r.split('/')[0];b.title=r;b.onclick=()=>{regF=r;rf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();};rf.appendChild(b);});
 
-function setF(f,b){filtro=f;document.getElementById('f-tipo').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();}
-function setT(t,b){tendF=t;document.getElementById('f-tend').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();}
-function setR(r,b){regF=r;rf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');render();}
+function setF(f,b){filtro=f;document.getElementById('f-tipo').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(f!=='todos')sw('overview',document.querySelectorAll('.tab')[0]);render();}
+function setT(t,b){tendF=t;document.getElementById('f-tend').querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(t!=='todos')sw('overview',document.querySelectorAll('.tab')[0]);render();}
+function setR(r,b){regF=r;rf.querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));b.classList.add('on');sw('overview',document.querySelectorAll('.tab')[0]);render();}
 function setQ(v){query=v.toLowerCase();render();}
 function filtered(){return D.filter(d=>(filtro==='todos'||d.tipo===filtro)&&(tendF==='todos'||d.tendencia===tendF)&&(regF==='todos'||d.regiao===regF)&&(!query||d.municipio.toLowerCase().includes(query)));}
 
@@ -312,7 +332,7 @@ function buildPanorama(f) {
       <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.7px;text-transform:uppercase;margin-bottom:8px">
         Panorama — ${label} · ${f.length} município${f.length>1?'s':''}
       </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px">
         <div style="background:rgba(255,255,255,.08);border-radius:7px;padding:8px 10px">
           <div style="font-size:17px;font-weight:700">${fmtN(tot_votos)}</div>
           <div style="font-size:10px;color:rgba(255,255,255,.45);margin-top:2px">Total votos 2022</div>
